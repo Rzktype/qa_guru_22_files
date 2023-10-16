@@ -2,6 +2,8 @@ package com.rzktype;
 
 import com.codeborne.pdftest.PDF;
 import com.codeborne.xlstest.XLS;
+import com.fasterxml.jackson.core.ObjectCodec;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.opencsv.CSVReader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -9,10 +11,10 @@ import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -25,7 +27,7 @@ public class ArchiveParsingTest {
     String jsonFileName = "generated.json";
 
     @Test
-    void ArchivedFilesTest() throws Exception {
+    void ArchivedFilesTest(,  ObjectCodec objectMapper) throws Exception {
         try (InputStream stream = cl.getResourceAsStream(archiveName);
              ZipInputStream zis = new ZipInputStream(stream, Charset.forName("windows-1251"))) {
             ZipEntry entry;
@@ -58,6 +60,10 @@ public class ArchiveParsingTest {
                     Assertions.assertArrayEquals(new String[]{"400", "ошибка на стороне клиента"}, fourthRow);
                     Assertions.assertArrayEquals(new String[]{"500", "ошибка на стороне сервера"}, fifthRow);
 
+                } else if (entry.getName().contains(jsonFileName)){
+                    Reader reader = new InputStreamReader(zis);
+                    Map<String,Object> file = objectMapper.readValue(reader, new TypeReference<>(){});
+
                 }
 
 
@@ -65,10 +71,29 @@ public class ArchiveParsingTest {
 //                    System.out.println("All files checked");
 //
 //                }
-            }
-@Test
-        @DisplayName("")
 
+
+                /*Реализовать разбор json файла библиотекой Jackson
+                  – Придумать реальный объект и описать его в виде json
+                  – В идеале json должен содержать массив
+                  - Дополнительно я хочу сделать это в одном тесте с проверкой остальных файлов из архива */
+
+                // example JacksonTest c habr
+//                public class JacksonTest {
+//	...
+//                    @Test
+//                    void fileToPojoWithUnknownProperties() throws IOException {
+//                        File file = new File("src/test/resources/employeeWithUnknownProperties.json");
+//                        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//
+//                        Employee employee = objectMapper.readValue(file, Employee.class);
+//
+//                        assertThat(employee.getFirstName()).isEqualTo("Homer");
+//                        assertThat(employee.getLastName()).isEqualTo("Simpson");
+//                        assertThat(employee.getAge()).isEqualTo(44);
+//                    }
+//                }
+            }
         }
     }
 
