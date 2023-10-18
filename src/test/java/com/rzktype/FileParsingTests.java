@@ -21,12 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatList;
 
 public class FileParsingTests {
-    ClassLoader cl = FileParsingTests.class.getClassLoader();
+    private static final ClassLoader cl = FileParsingTests.class.getClassLoader();
     private static final String ARCHIVE_NAME = "filesArchive.zip";
-    private static final String XLSX_FILE_NAME = "filesArchive/KFO.xlsx";
-    private static final String CSV_FILE_NAME = "filesArchive/csvFile.csv";
-    private static final String PDF_FILE_NAME = "filesArchive/pdfSber.pdf";
-    private static final String JSON_FILE_NAME = "filesArchive/generated.json";
+    private static final String XLSX_FILE_NAME = "KFO.xlsx";
+    private static final String CSV_FILE_NAME = "csvFile.csv";
+    private static final String PDF_FILE_NAME = "pdfSber.pdf";
+    private static final String JSON_FILE_NAME = "generated.json";
 
     @Test
     @Description("Проверка pdf файла из архива")
@@ -51,11 +51,11 @@ public class FileParsingTests {
         final String[] fourthRow = content.get(3);
         final String[] fifthRow = content.get(4);
 
-        Assertions.assertArrayEquals(new String[]{"100", "информационные"}, firstRow);
-        Assertions.assertArrayEquals(new String[]{"200", "код выполнен успешно"}, secondRow);
-        Assertions.assertArrayEquals(new String[]{"300", "информирует о редиректе"}, thirdRow);
-        Assertions.assertArrayEquals(new String[]{"400", "ошибка на стороне клиента"}, fourthRow);
-        Assertions.assertArrayEquals(new String[]{"500", "ошибка на стороне сервера"}, fifthRow);
+        Assertions.assertArrayEquals(new String[]{"100", "Info"}, firstRow);
+        Assertions.assertArrayEquals(new String[]{"200", "Ok"}, secondRow);
+        Assertions.assertArrayEquals(new String[]{"300", "Redirect"}, thirdRow);
+        Assertions.assertArrayEquals(new String[]{"400", "Client"}, fourthRow);
+        Assertions.assertArrayEquals(new String[]{"500", "Server"}, fifthRow);
         closeInputStream(csvFileStream);
     }
 
@@ -82,7 +82,7 @@ public class FileParsingTests {
 
         assertThat(jsonObject.getId()).isEqualTo("652d511c040023a6b742dcfc");
         assertThat(jsonObject.getIndex()).isEqualTo(0);
-        Assertions.assertEquals(false, jsonObject.getActive());
+        Assertions.assertEquals(false, jsonObject.getIsActive());
         assertThatList(jsonObject.getFriends()).contains("Hays Cole", "Welch Harper");
         assertThat(jsonObject.getGreeting()).contains("unread messages");
         assertThat(jsonObject.getFavoriteFruit()).isEqualTo("apple");

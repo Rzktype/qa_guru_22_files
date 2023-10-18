@@ -29,11 +29,11 @@ import java.util.Objects;
             this.index = index;
         }
 
-        public Boolean getActive() {
+        public Boolean getIsActive() {
             return isActive;
         }
 
-        public void setActive(Boolean active) {
+        public void setIsActive(Boolean active) {
             isActive = active;
         }
 
