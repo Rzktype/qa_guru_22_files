@@ -40,7 +40,7 @@ public class FileParsingTests {
     @Test
     @Description("Проверка csv файла из архива")
     void csvTest() throws Exception {
-        InputStream csvFileStream = getFile(ARCHIVE_NAME, CSV_FILE_NAME);
+        InputStream csvFileStream = getFile(ARCHIVE_NAME, CSV_FILE_NAME );
         CSVReader csvReader = new CSVReader(new InputStreamReader(csvFileStream, UTF_8));
         List<String[]> content = csvReader.readAll();
         Assertions.assertEquals(5, content.size());
@@ -82,7 +82,7 @@ public class FileParsingTests {
 
         assertThat(jsonObject.getId()).isEqualTo("652d511c040023a6b742dcfc");
         assertThat(jsonObject.getIndex()).isEqualTo(0);
-        assertThat(jsonObject.getActive()).isEqualTo(false);
+        Assertions.assertEquals(false, jsonObject.getActive());
         assertThatList(jsonObject.getFriends()).contains("Hays Cole", "Welch Harper");
         assertThat(jsonObject.getGreeting()).contains("unread messages");
         assertThat(jsonObject.getFavoriteFruit()).isEqualTo("apple");
